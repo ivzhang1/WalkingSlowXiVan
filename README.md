@@ -2,26 +2,27 @@
 ## WalkingSlowXzHang
 ## Todo List for this Weekend
 - [ ]  Existing, MDL Commands/Features:
-	- [ ]  light
+	- [ ]  light (Runmin)
 		- [ ]  Add a light to the symbol table
 		- [ ]  When calculating diffuse and specular: loop through all the lights.
-	- [ ]  mesh
+	- [ ]  mesh (Ivan)
 		- [ ]  Use an external .obj file for polygons
 		- [ ]  Read up on the obj format [here](https://en.wikipedia.org/wiki/Wavefront_.obj_file).
 		- [ ]  Find example files [here](http://people.sc.fsu.edu/~jburkardt/data/obj/obj.html).
 		- [ ]  Make sure you deal with .obj files that list quadrilateral faces instead of triangles.
-  - [ ]  set
+	- [ ]  set (Runmin)
 		- [ ]  Assign a value to a knob
-	- [ ]  saveknobs
+	- [ ]  saveknobs (Runmin)
 		- [ ]  Save current knob values to a list
-	- [ ]  tween
+	- [ ]  tween (Runmin)
 		- [ ]  Produce an animation by going between two knob lists
-	- [ ]  shading
+	- [ ]  shading (Runmin)
 		- [ ]  Use different shading techniques / calculating I more or less frequently.
 		- [ ]  As discussed in class, a hash table structure can be very helpful for dealing with vertex normals. If you are woking in c, check out [uthash](https://troydhanson.github.io/uthash/).
-	- [ ]  save_coordinate_system
-    - [ ]  Save a copy of the top of the stack to the symbol table
-    - [ ]  Use this coordinate system when drawing shapes (extra argument required)
+	- [ ]  save_coordinate_system (Ivan)
+	    - [ ]  Save a copy of the top of the stack to the symbol table
+	    - [ ]  Use this coordinate system when drawing shapes (extra argument required)
+	    
 - [ ]  Additions to MDL that require changes to the language:
 	- [ ]  New primitive shapes
 	- [ ]  Change the behavior of vary
