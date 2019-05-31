@@ -1,5 +1,5 @@
-## WalkingSlowXzHang
 ## Runmin Lu and Ivan Zhang
+## WalkingSlowXzHang
 ## Todo List for this Weekend
 - [ ]  Existing, MDL Commands/Features:
 	- [ ]  light
@@ -21,7 +21,7 @@
 		- [ ]  As discussed in class, a hash table structure can be very helpful for dealing with vertex normals. If you are woking in c, check out [uthash](https://troydhanson.github.io/uthash/).
 	- [ ]  save_coordinate_system
     - [ ]  Save a copy of the top of the stack to the symbol table
-    - [ ]  use this coordinate system when drawing shapes (extra argument required)
+    - [ ]  Use this coordinate system when drawing shapes (extra argument required)
 - [ ]  Additions to MDL that require changes to the language:
 	- [ ]  New primitive shapes
 	- [ ]  Change the behavior of vary
