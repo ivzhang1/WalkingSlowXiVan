@@ -219,14 +219,17 @@ def run(filename):
                 display(screen)
             elif c == 'save':
                 save_extension(screen, args[0])
+                print("saved,", args[0])
 
-        save_extension(screen, "./anim/"+name+str(counter))
-        tmp = new_matrix()
-        ident( tmp )
-        stack = [ [x[:] for x in tmp] ]
-        screen = new_screen()
-        zbuffer = new_zbuffer()
-        counter+=1
+        if(name != 'default_gif' and num_frames != 1):
+            save_extension(screen, "./anim/"+name+str(counter))
+            tmp = new_matrix()
+            ident( tmp )
+            stack = [ [x[:] for x in tmp] ]
+            screen = new_screen()
+            zbuffer = new_zbuffer()
+            counter+=1
 
-    make_animation(name)
+    if(name != 'default_gif' and num_frames != 1):
+        make_animation(name)
         # end operation loop

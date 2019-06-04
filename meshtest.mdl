@@ -1,0 +1,4 @@
+push
+mesh :filename1
+save file.png
+display
