@@ -1,4 +1,3 @@
-push
-mesh :filename1
+mesh kons :diamond.obj
 save file.png
 display

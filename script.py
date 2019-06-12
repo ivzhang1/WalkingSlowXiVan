@@ -138,7 +138,9 @@ def run(filename):
             for knob in frame.keys():
                 symbols[knob] = frame[knob]
 
-            if c == 'box':
+            if c == 'mesh':
+                print("Mesh")
+            elif c == 'box':
                 if command['constants']:
                     reflect = command['constants']
                 add_box(tmp,
