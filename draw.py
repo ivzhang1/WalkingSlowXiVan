@@ -76,6 +76,11 @@ def add_polygon( polygons, x0, y0, z0, x1, y1, z1, x2, y2, z2 ):
     add_point(polygons, x1, y1, z1)
     add_point(polygons, x2, y2, z2)
 
+def add_polygon( polygons, point0, point1, point2 ):
+    add_point(polygons, point0[0], point0[1], point0[2])
+    add_point(polygons, point1[0], point0[1], point0[2])
+    add_point(polygons, point2[0], point0[1], point2[2])
+
 def draw_polygons( polygons, screen, zbuffer, view, ambient, light, symbols, reflect):
     if len(polygons) < 2:
         print 'Need at least 3 points to draw'
@@ -114,6 +119,24 @@ def draw_polygons( polygons, screen, zbuffer, view, ambient, light, symbols, ref
             #            polygons[point+2][2],
             #            screen, zbuffer, color)
         point+= 3
+
+def add_mesh(polygons, mesh_list):
+    faces = []
+    points = []
+    for line in mesh_list:
+        line = line.split()
+        if len(line) != 0:
+            if line[0] == 'v':
+                points.append([float(line[1]), float(line[2]), float(line[3])]  )
+
+            if line[0] == 'f':
+                faces.append([line[0], int(line[1])-1, int(line[2])-1, int(line[3])-1] )
+
+    print(faces)
+
+    for face in faces:
+        add_polygon(polygons, points[face[1]], points[face[2]], points[face[3]])
+
 
 
 def add_box( polygons, x, y, z, width, height, depth ):

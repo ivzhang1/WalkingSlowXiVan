@@ -139,7 +139,17 @@ def run(filename):
                 symbols[knob] = frame[knob]
 
             if c == 'mesh':
-                print("Mesh")
+                if command['constants']:
+                    reflect = command['constants']
+                filename = command['args'][0]
+                f = open(filename, "r")
+                obj_lines = f.readlines()
+                add_mesh(tmp, obj_lines)
+                matrix_mult( stack[-1], tmp )
+                draw_polygons(tmp, screen, zbuffer, view, ambient, light, symbols, reflect)
+                tmp = []
+                reflect = '.white'
+                f.close()
             elif c == 'box':
                 if command['constants']:
                     reflect = command['constants']
