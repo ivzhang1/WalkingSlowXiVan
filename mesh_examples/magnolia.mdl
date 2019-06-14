@@ -1,0 +1,10 @@
+constants purple 0.3 0.8 0.2 0.0 0.0 0.0 0.3 0.8 0.2
+move 275 200 0
+rotate x -50
+rotate z 100
+rotate y 270
+scale 2 2 2
+push
+mesh purple :magnolia.obj
+save magnolia.png
+display

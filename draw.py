@@ -130,11 +130,14 @@ def add_mesh(polygons, mesh_list):
                 points.append([float(line[1]), float(line[2]), float(line[3])]  )
 
             if line[0] == 'f':
-                faces.append([int(line[1])-1, int(line[2])-1, int(line[3])-1] )
+                faces.append([int(x)-1 for x in line[1:]])
 
     for face in faces:
-        print(face)
-        add_polygon(polygons, points[face[0]], points[face[1]], points[face[2]])
+        if len(face) == 3:
+            add_polygon(polygons, points[face[0]], points[face[1]], points[face[2]])
+        if len(face) == 4:
+            add_polygon(polygons, points[face[0]], points[face[1]], points[face[2]])
+            add_polygon(polygons, points[face[0]], points[face[2]], points[face[3]])
 
 
 

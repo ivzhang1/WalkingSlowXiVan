@@ -5,11 +5,11 @@
 	- [ ]  light (Runmin)
 		- [ ]  Add a light to the symbol table
 		- [ ]  When calculating diffuse and specular: loop through all the lights.
-	- [ ]  mesh (Ivan)
-		- [ ]  Use an external .obj file for polygons
-		- [ ]  Read up on the obj format [here](https://en.wikipedia.org/wiki/Wavefront_.obj_file).
-		- [ ]  Find example files [here](http://people.sc.fsu.edu/~jburkardt/data/obj/obj.html).
-		- [ ]  Make sure you deal with .obj files that list quadrilateral faces instead of triangles.
+	- [x]  mesh (Ivan)
+		- [x]  Use an external .obj file for polygons
+		- [x]  Read up on the obj format [here](https://en.wikipedia.org/wiki/Wavefront_.obj_file).
+		- [x]  Find example files [here](http://people.sc.fsu.edu/~jburkardt/data/obj/obj.html).
+		- [x]  Make sure you deal with .obj files that list quadrilateral faces instead of triangles.
 	- [ ]  set (Runmin)
 		- [ ]  Assign a value to a knob
 	- [ ]  saveknobs (Runmin)
@@ -22,7 +22,7 @@
 	- [ ]  save_coordinate_system (Ivan)
 	    - [ ]  Save a copy of the top of the stack to the symbol table
 	    - [ ]  Use this coordinate system when drawing shapes (extra argument required)
-	    
+
 - [ ]  Additions to MDL that require changes to the language:
 	- [ ]  New primitive shapes
 	- [ ]  Change the behavior of vary

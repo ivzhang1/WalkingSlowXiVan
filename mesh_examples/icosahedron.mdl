@@ -1,0 +1,10 @@
+constants purple 0.3 0.8 0.2 0.0 0.0 0.0 0.3 0.8 0.2
+move 275 200 0
+rotate x -30
+rotate z 150
+rotate y 270
+scale 20 20 20
+push
+mesh purple :icosahedron.obj
+save icosahedron.png
+display
