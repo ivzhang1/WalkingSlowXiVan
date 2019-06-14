@@ -127,6 +127,8 @@ def run(filename):
     coords = []
     coords1 = []
     counter = 0
+    shade_t = "flat"
+
     for frame in frames:
 
         for command in commands:
@@ -146,10 +148,15 @@ def run(filename):
                 obj_lines = f.readlines()
                 add_mesh(tmp, obj_lines)
                 matrix_mult( stack[-1], tmp )
-                draw_polygons(tmp, screen, zbuffer, view, ambient, light, symbols, reflect)
+                draw_polygons(tmp, screen, zbuffer, view, ambient, light, symbols, reflect, shade_t)
                 tmp = []
                 reflect = '.white'
                 f.close()
+
+            elif c == 'shading':
+                shade_type = command['shade_type']
+                shade_t = shade_type if shade_type in ['gouraud', 'phong'] else 'flat'
+
             elif c == 'box':
                 if command['constants']:
                     reflect = command['constants']
@@ -157,7 +164,7 @@ def run(filename):
                         args[0], args[1], args[2],
                         args[3], args[4], args[5])
                 matrix_mult( stack[-1], tmp )
-                draw_polygons(tmp, screen, zbuffer, view, ambient, light, symbols, reflect)
+                draw_polygons(tmp, screen, zbuffer, view, ambient, light, symbols, reflect, shade_t)
                 tmp = []
                 reflect = '.white'
             elif c == 'sphere':
@@ -166,7 +173,7 @@ def run(filename):
                 add_sphere(tmp,
                            args[0], args[1], args[2], args[3], step_3d)
                 matrix_mult( stack[-1], tmp )
-                draw_polygons(tmp, screen, zbuffer, view, ambient, light, symbols, reflect)
+                draw_polygons(tmp, screen, zbuffer, view, ambient, light, symbols, reflect, shade_t)
                 tmp = []
                 reflect = '.white'
             elif c == 'torus':
@@ -175,7 +182,7 @@ def run(filename):
                 add_torus(tmp,
                           args[0], args[1], args[2], args[3], args[4], step_3d)
                 matrix_mult( stack[-1], tmp )
-                draw_polygons(tmp, screen, zbuffer, view, ambient, light, symbols, reflect)
+                draw_polygons(tmp, screen, zbuffer, view, ambient, light, symbols, reflect, shade_t)
                 tmp = []
                 reflect = '.white'
             elif c == 'line':
