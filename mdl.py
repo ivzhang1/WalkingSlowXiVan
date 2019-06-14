@@ -14,43 +14,47 @@ tokens = (
     "AMBIENT",
     "TORUS",
     "SPHERE",
-    "BOX", 
-    "LINE", 
-    "MESH", 
-    "TEXTURE", 
-    "SET", 
-    "MOVE", 
-    "SCALE", 
-    "ROTATE", 
-    "BASENAME", 
-    "SAVE_KNOBS", 
-    "TWEEN", 
-    "FRAMES", 
-    "VARY", 
-    "PUSH", 
-    "POP", 
-    "SAVE", 
-    "GENERATE_RAYFILES", 
-    "SHADING", 
-    "SHADING_TYPE", 
-    "SET_KNOBS", 
-    "FOCAL", 
-    "DISPLAY", 
-    "SCREEN", 
-    "WEB", 
+    "BOX",
+    "LINE",
+    "MESH",
+    "TEXTURE",
+    "SET",
+    "MOVE",
+    "SCALE",
+    "ROTATE",
+    "BASENAME",
+    "SAVE_KNOBS",
+    "TWEEN",
+    "FRAMES",
+    "VARY",
+    "PUSH",
+    "POP",
+    "SAVE",
+    "GENERATE_RAYFILES",
+    "SHADING",
+    "SHADING_TYPE",
+    "SET_KNOBS",
+    "FOCAL",
+    "DISPLAY",
+    "SCREEN",
+    "WEB",
     "CO",
     "TRIANGLE",
-    "SET_DEFAULT"
+    "SET_DEFAULT",
+    "ELLIPSOID",
+    "TETRAHEDRON",
+    "CONE",
+    "CYLINDER"
 )
 
 reserved = {
-    "x" : "XYZ", 
-    "y" : "XYZ", 
-    "z" : "XYZ", 
-    "screen" : "SCREEN", 
+    "x" : "XYZ",
+    "y" : "XYZ",
+    "z" : "XYZ",
+    "screen" : "SCREEN",
     "light" : "LIGHT",
     "constants" : "CONSTANTS",
-    "save_coord_system" : "SAVE_COORDS", 
+    "save_coord_system" : "SAVE_COORDS",
     "camera" : "CAMERA",
     "ambient" : "AMBIENT",
     "torus" : "TORUS",
@@ -83,7 +87,11 @@ reserved = {
     "display" : "DISPLAY",
     "web" : "WEB",
     "triangle" : "TRIANGLE",
-    "set_default" : "SET_DEFAULT"
+    "set_default" : "SET_DEFAULT",
+    "ellipsoid" : "ELLIPSOID",
+    "tetrahedron" : "TETRAHEDRON",
+    "cone" : "CONE",
+    "cylinder" : "CYLINDER"
 }
 
 t_ignore = " \t"
@@ -211,6 +219,9 @@ def p_command_sphere(p):
           cmd['cs'] = p[7]
     cmd['args'] = p[arg_start:arg_start+4]
     commands.append(cmd)
+
+def p_command_ellipsoid(p):
+    "command : ELLIPSOID NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER"
 
 def p_command_torus(p):
     """command : TORUS NUMBER NUMBER NUMBER NUMBER NUMBER
@@ -381,6 +392,7 @@ def p_command_mesh(p):
     if len(p) == 7 and isinstance(p[6], str) and p[3]==":":
         cmd['cs'] = p[6]
     commands.append(cmd)
+
 
 def p_save_knobs(p):
     "command : SAVE_KNOBS SYMBOL"
