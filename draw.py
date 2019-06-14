@@ -78,8 +78,8 @@ def add_polygon( polygons, x0, y0, z0, x1, y1, z1, x2, y2, z2 ):
 
 def add_polygon( polygons, point0, point1, point2 ):
     add_point(polygons, point0[0], point0[1], point0[2])
-    add_point(polygons, point1[0], point0[1], point0[2])
-    add_point(polygons, point2[0], point0[1], point2[2])
+    add_point(polygons, point1[0], point1[1], point1[2])
+    add_point(polygons, point2[0], point2[1], point2[2])
 
 def draw_polygons( polygons, screen, zbuffer, view, ambient, light, symbols, reflect):
     if len(polygons) < 2:
@@ -130,10 +130,11 @@ def add_mesh(polygons, mesh_list):
                 points.append([float(line[1]), float(line[2]), float(line[3])]  )
 
             if line[0] == 'f':
-                faces.append([line[0], int(line[1])-1, int(line[2])-1, int(line[3])-1] )
+                faces.append([int(line[1])-1, int(line[2])-1, int(line[3])-1] )
 
     for face in faces:
-        add_polygon(polygons, points[face[1]], points[face[2]], points[face[3]])
+        print(face)
+        add_polygon(polygons, points[face[0]], points[face[1]], points[face[2]])
 
 
 
