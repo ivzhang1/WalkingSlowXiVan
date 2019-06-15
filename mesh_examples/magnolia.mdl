@@ -5,6 +5,6 @@ rotate z 100
 rotate y 270
 scale 2 2 2
 push
-mesh purple :magnolia.obj
+mesh :magnolia
 save magnolia.png
 display

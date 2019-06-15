@@ -5,6 +5,6 @@ rotate z 150
 rotate y 80
 scale 2 2 2
 push
-mesh hand :diamond.obj
-save file.png
+mesh :diamond 
+save diamond.png
 display

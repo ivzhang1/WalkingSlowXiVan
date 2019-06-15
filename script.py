@@ -136,7 +136,21 @@ def run(filename):
 
             for knob in frame.keys():
                 symbols[knob] = frame[knob]
-            if c == 'box':
+
+            if c == 'mesh':
+                if command['constants'] and command['constants'] != ':':
+                    reflect = command['constants']
+                filename = command['args'][0]
+                f = open(filename+'.obj', "r")
+
+                obj_lines = f.readlines()
+                add_mesh(tmp, obj_lines)
+                matrix_mult( stack[-1], tmp )
+                draw_polygons(tmp, screen, zbuffer, view, ambient, light, symbols, reflect)
+                tmp = []
+                reflect = '.white'
+                f.close()
+            elif c == 'box':
                 if command['constants']:
                     reflect = command['constants']
                 add_box(tmp,
@@ -263,6 +277,6 @@ def run(filename):
             screen = new_screen()
             zbuffer = new_zbuffer()
             counter+=1
-            
+
     if(name != 'default_gif' and num_frames != 1):
         make_animation(name)

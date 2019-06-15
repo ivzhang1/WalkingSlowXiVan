@@ -115,6 +115,25 @@ def draw_polygons( polygons, screen, zbuffer, view, ambient, light, symbols, ref
             #            screen, zbuffer, color)
         point+= 3
 
+def add_mesh(polygons, mesh_list):
+    faces = []
+    points = []
+    for line in mesh_list:
+        line = line.split()
+        if len(line) != 0:
+            if line[0] == 'v':
+                points.append([float(line[1]), float(line[2]), float(line[3])]  )
+
+            if line[0] == 'f':
+                faces.append([int(x)-1 for x in line[1:]])
+
+    for face in faces:
+        if len(face) == 3:
+            add_polygon(polygons, points[face[0]][0], points[face[0]][1], points[face[0]][2], points[face[1]][0], points[face[1]][1], points[face[1]][2],points[face[2]][0], points[face[2]][1], points[face[2]][2])
+        if len(face) == 4:
+            add_polygon(polygons, points[face[0]][0], points[face[0]][1], points[face[0]][2], points[face[1]][0], points[face[1]][1], points[face[1]][2],points[face[2]][0], points[face[2]][1], points[face[2]][2])
+            add_polygon(polygons, points[face[0]][0], points[face[0]][1], points[face[0]][2], points[face[2]][0], points[face[2]][1], points[face[2]][2], points[face[3]][0], points[face[3]][1], points[face[3]][2])
+
 
 def add_box( polygons, x, y, z, width, height, depth ):
     x1 = x + width
