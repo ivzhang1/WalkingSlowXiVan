@@ -76,47 +76,44 @@ def add_polygon( polygons, x0, y0, z0, x1, y1, z1, x2, y2, z2 ):
     add_point(polygons, x1, y1, z1)
     add_point(polygons, x2, y2, z2)
 
-def add_polygon( polygons, point0, point1, point2 ):
-    add_point(polygons, point0[0], point0[1], point0[2])
-    add_point(polygons, point1[0], point1[1], point1[2])
-    add_point(polygons, point2[0], point2[1], point2[2])
-
 def draw_polygons( polygons, screen, zbuffer, view, ambient, light, symbols, reflect):
     if len(polygons) < 2:
         print 'Need at least 3 points to draw'
         return
 
     point = 0
-
     while point < len(polygons) - 2:
+
         normal = calculate_normal(polygons, point)[:]
 
+        #print normal
         if normal[2] > 0:
 
             color = get_lighting(normal, view, ambient, light, symbols, reflect )
             scanline_convert(polygons, point, screen, zbuffer, color)
 
+            # draw_line( int(polygons[point][0]),
+            #            int(polygons[point][1]),
+            #            polygons[point][2],
+            #            int(polygons[point+1][0]),
+            #            int(polygons[point+1][1]),
+            #            polygons[point+1][2],
+            #            screen, zbuffer, color)
+            # draw_line( int(polygons[point+2][0]),
+            #            int(polygons[point+2][1]),
+            #            polygons[point+2][2],
+            #            int(polygons[point+1][0]),
+            #            int(polygons[point+1][1]),
+            #            polygons[point+1][2],
+            #            screen, zbuffer, color)
+            # draw_line( int(polygons[point][0]),
+            #            int(polygons[point][1]),
+            #            polygons[point][2],
+            #            int(polygons[point+2][0]),
+            #            int(polygons[point+2][1]),
+            #            polygons[point+2][2],
+            #            screen, zbuffer, color)
         point+= 3
-
-def add_mesh(polygons, mesh_list):
-    faces = []
-    points = []
-    for line in mesh_list:
-        line = line.split()
-        if len(line) != 0:
-            if line[0] == 'v':
-                points.append([float(line[1]), float(line[2]), float(line[3])]  )
-
-            if line[0] == 'f':
-                faces.append([int(x)-1 for x in line[1:]])
-
-    for face in faces:
-        if len(face) == 3:
-            add_polygon(polygons, points[face[0]], points[face[1]], points[face[2]])
-        if len(face) == 4:
-            add_polygon(polygons, points[face[0]], points[face[1]], points[face[2]])
-            add_polygon(polygons, points[face[0]], points[face[2]], points[face[3]])
-
 
 
 def add_box( polygons, x, y, z, width, height, depth ):
@@ -266,6 +263,57 @@ def generate_torus( cx, cy, cz, r0, r1, step ):
             points.append([x, y, z])
     return points
 
+def add_cylinder(polygons, bx, by, bz, r, h, step ):
+    points = generate_cylinder(bx, by, bz, r, h, step)
+    for i in range(step):
+        p0 = i * 2
+        p1 = p0 + 1
+        p2 = (p1 + 2) % (step * 2)
+        add_polygon(polygons,
+                    points[p0][0], points[p0][1], points[p0][2],
+                    points[p1][0], points[p1][1], points[p1][2],
+                    points[p2][0], points[p2][1], points[p2][2])
+        p1 = p2
+        p2 -= 1
+        add_polygon(polygons,
+                    points[p0][0], points[p0][1], points[p0][2],
+                    points[p1][0], points[p1][1], points[p1][2],
+                    points[p2][0], points[p2][1], points[p2][2])
+
+def generate_cylinder(bx, by, bz, r, h, step):
+    points = []
+    rot_start = 0
+    rot_stop = step
+    for rotation in range(rot_start, rot_stop):
+        rot = rotation/float(step)
+        x = bx + r * math.cos(2*math.pi * rot)
+        z = bz + r * math.sin(2*math.pi * rot)
+        points.append([x, by, z])
+        points.append([x, by + h, z])
+    return points
+
+def add_cone(polygons, bx, by, bz, r, h, step ):
+    points = generate_cone(bx, by, bz, r, h, step)
+    p1 = len(points) - 1
+    for i in range(step):
+        p0 = i
+        p2 = (i + 1) % step
+        add_polygon(polygons,
+                    points[p0][0], points[p0][1], points[p0][2],
+                    points[p1][0], points[p1][1], points[p1][2],
+                    points[p2][0], points[p2][1], points[p2][2])
+
+def generate_cone(cx, cy, cz, r, h, step):
+    points = []
+    rot_start = 0
+    rot_stop = step
+    for rotation in range(rot_start, rot_stop):
+        rot = rotation/float(step)
+        x = cx + r * math.cos(2*math.pi * rot)
+        z = cz + r * math.sin(2*math.pi * rot)
+        points.append([x, cy, z])
+    points.append([cx, cy + h, cz])
+    return points
 
 def add_circle( points, cx, cy, cz, r, step ):
     x0 = r + cx

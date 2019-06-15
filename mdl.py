@@ -39,8 +39,6 @@ tokens = (
     "SCREEN",
     "WEB",
     "CO",
-    "TRIANGLE",
-    "SET_DEFAULT",
     "ELLIPSOID",
     # "TETRAHEDRON",
     "CONE",
@@ -86,8 +84,6 @@ reserved = {
     "focal" : "FOCAL",
     "display" : "DISPLAY",
     "web" : "WEB",
-    "triangle" : "TRIANGLE",
-    "set_default" : "SET_DEFAULT",
     "ellipsoid" : "ELLIPSOID",
     # "tetrahedron" : "TETRAHEDRON",
     "cone" : "CONE",
@@ -98,8 +94,8 @@ t_ignore = " \t"
 
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z_0-9]*'
-    if t.value in reserved.keys():
-        t.type = reserved[t.value]
+    if reserved.has_key(t.value):
+        t.type = reserved.get(t.value)
     return t
 
 def t_STRING(t):
@@ -121,7 +117,7 @@ def t_CO(t):
     return t
 
 def t_error(t):
-    print("TOKEN ERROR: " + str(t))
+    print "TOKEN ERROR: " + str(t)
 
 lex.lex()
 
@@ -129,35 +125,6 @@ lex.lex()
 
 commands = []
 symbols = {}
-
-def p_command_triangle(p):
-    """command : TRIANGLE NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER
-               | TRIANGLE NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER SYMBOL
-               | TRIANGLE SYMBOL NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER
-               | TRIANGLE SYMBOL NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER SYMBOL"""
-    cmd = {'op' : p[1], 'constants' : None, 'cs' : None, 'args':[]}
-    arg_start = 2
-    if isinstance(p[2], str):
-        cmd['constants'] = p[2]
-        arg_start = 3
-    if len(p) == 11 and isinstance(p[10], str):
-        cmd['cs'] = p[10]
-    if len(p) == 12 and isinstance(p[11], str):
-          cmd['cs'] = p[11]
-    cmd['args'] = p[arg_start:arg_start+9]
-    commands.append(cmd)
-
-def p_command_set_default(p):
-    """command : SET_DEFAULT NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER
-               | SET_DEFAULT SYMBOL"""
-    cmd = {'op' : p[1], 'constants' : None, 'cs' : None, 'args':[]}
-    arg_start = 2
-    if isinstance(p[2], str):
-        cmd['constants'] = p[2]
-        commands.append(cmd)
-    else:
-        cmd['args'] = p[arg_start:arg_start+9]
-        commands.append(cmd)
 
 def p_input(p):
     """input :
@@ -197,7 +164,7 @@ def p_command_screen(p):
 
 def p_command_save(p):
     """command : SAVE TEXT TEXT"""
-    commands.append({'op' : p[1], 'args' : [p[2]+p[3]]})
+    commands.append({'op' : p[1], 'args' : [p[2]]})
 
 def p_command_show(p):
     """command : DISPLAY"""
@@ -216,8 +183,25 @@ def p_command_sphere(p):
     if len(p) == 7 and isinstance(p[6], str):
         cmd['cs'] = p[6]
     if len(p) == 8 and isinstance(p[7], str):
-        cmd['cs'] = p[7]
+          cmd['cs'] = p[7]
     cmd['args'] = p[arg_start:arg_start+4]
+    commands.append(cmd)
+
+def p_command_torus(p):
+    """command : TORUS NUMBER NUMBER NUMBER NUMBER NUMBER
+               | TORUS NUMBER NUMBER NUMBER NUMBER NUMBER SYMBOL
+               | TORUS SYMBOL NUMBER NUMBER NUMBER NUMBER NUMBER
+               | TORUS SYMBOL NUMBER NUMBER NUMBER NUMBER NUMBER SYMBOL"""
+    cmd = {'op' : p[1], 'constants' : None, 'cs' : None, 'args':[]}
+    arg_start = 2
+    if isinstance(p[2], str):
+        cmd['constants'] = p[2]
+        arg_start = 3
+    if len(p) == 8 and isinstance(p[7], str):
+        cmd['cs'] = p[7]
+    if len(p) == 9 and isinstance(p[8], str):
+          cmd['cs'] = p[8]
+    cmd['args'] = p[arg_start:arg_start+5]
     commands.append(cmd)
 
 def p_command_ellipsoid(p):
@@ -270,24 +254,6 @@ def p_command_cylinder(p):
           cmd['cs'] = p[8]
     cmd['args'] = p[arg_start:arg_start+5]
     commands.append(cmd)
-
-def p_command_torus(p):
-    """command : TORUS NUMBER NUMBER NUMBER NUMBER NUMBER
-               | TORUS NUMBER NUMBER NUMBER NUMBER NUMBER SYMBOL
-               | TORUS SYMBOL NUMBER NUMBER NUMBER NUMBER NUMBER
-               | TORUS SYMBOL NUMBER NUMBER NUMBER NUMBER NUMBER SYMBOL"""
-    cmd = {'op' : p[1], 'constants' : None, 'cs' : None, 'args':[]}
-    arg_start = 2
-    if isinstance(p[2], str):
-        cmd['constants'] = p[2]
-        arg_start = 3
-    if len(p) == 8 and isinstance(p[7], str):
-        cmd['cs'] = p[7]
-    if len(p) == 9 and isinstance(p[8], str):
-          cmd['cs'] = p[8]
-    cmd['args'] = p[arg_start:arg_start+5]
-    commands.append(cmd)
-
 
 def p_command_box(p):
     """command : BOX NUMBER NUMBER NUMBER NUMBER NUMBER NUMBER
@@ -424,22 +390,21 @@ def p_command_generate_rayfiles(p):
     commands.append({'op':p[1], 'args':None})
 
 def p_command_mesh(p):
-    """command : MESH CO TEXT TEXT
-               | MESH SYMBOL CO TEXT TEXT
-               | MESH CO TEXT TEXT SYMBOL
-               | MESH SYMBOL CO TEXT TEXT SYMBOL"""
+    """command : MESH CO TEXT
+               | MESH SYMBOL CO TEXT
+               | MESH CO TEXT SYMBOL
+               | MESH SYMBOL CO TEXT SYMBOL"""
     cmd = {'op':p[1], 'args' : [], 'cs':None, 'constants':None}
-    arg_start = 3
+    arg_start = 2
     if isinstance(p[2], str):
         cmd['constants'] = p[2]
         arg_start+= 1
-    cmd['args'].append(p[arg_start]+p[arg_start+1])
-    if len(p) == 6 and isinstance(p[5], str) and p[2]==":":
-        cmd['cs'] = p[5]
-    if len(p) == 7 and isinstance(p[6], str) and p[3]==":":
-        cmd['cs'] = p[6]
+    cmd['args'].append(p[arg_start])
+    if len(p) == 4 and isinstance(p[3], str):
+        cmd['cs'] = p[3]
+    if len(p) == 5 and isinstance(p[4], str):
+        cmd['cs'] = p[4]
     commands.append(cmd)
-
 
 def p_save_knobs(p):
     "command : SAVE_KNOBS SYMBOL"
@@ -472,7 +437,7 @@ def p_texture(p):
     symbols[p[2]] = ['texture', p[3:]]
 
 def p_error(p):
-    print('SYNTAX ERROR: ' + str(p))
+    print 'SYNTAX ERROR: ' + str(p)
 
 yacc.yacc()
 

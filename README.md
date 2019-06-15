@@ -6,7 +6,7 @@
 		- [x]  Read up on the obj format [here](https://en.wikipedia.org/wiki/Wavefront_.obj_file).
 		- [x]  Find example files [here](http://people.sc.fsu.edu/~jburkardt/data/obj/obj.html).
 		- [x]  Make sure you deal with .obj files that list quadrilateral faces instead of triangles.
-	- [ ]  New primitive shapes
-		- [ ] ellipsoid cx cy cz rx ry rz
-		- [ ] cone cx cy cz r h
-		- [ ] cylinder cx cy cz r h
+	- [x]  New primitive shapes
+		- [x] ellipsoid cx cy cz rx ry rz
+		- [x] cone cx cy cz r h
+		- [x] cylinder cx cy cz r h
