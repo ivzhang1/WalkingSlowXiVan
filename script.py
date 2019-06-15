@@ -233,6 +233,8 @@ def run(filename):
                 stack[-1] = [x[:] for x in tmp]
                 tmp = []
             elif c == 'scale':
+                knob = command['knob']
+                
                 if knob:
                     tmp = make_scale(args[0]*symbols[knob], args[1]*symbols[knob], args[2]*symbols[knob])
                 else:
