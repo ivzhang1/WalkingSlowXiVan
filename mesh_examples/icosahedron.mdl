@@ -3,8 +3,19 @@ move 275 200 0
 rotate x -30
 rotate z 150
 rotate y 270
-scale 20 20 20
+scale 10 10 10
 push
+move 275 200 0
 mesh :icosahedron
+push
+move 275 200 0
+mesh :diamond
+push
+move 275 200 0
+mesh :magnolia
+push
+move 275 200 0
+mesh :shuttle
+push
 save icosahedron.png
 display
